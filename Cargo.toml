@@ -1,0 +1,13 @@
+[lib]
+proc-macro = true
+
+[package]
+name = "color-hex"
+authors = ["Luke Newcomb <newcomb.luke@protonmail.com>"]
+description = "Procedural macro for converting hexadecimal strings to an RGB or RGBA byte array at compile time."
+repository = "https://github.com/newcomb-luke/color-hex"
+documentation = "https://docs.rs/color-hex"
+keywords = ["hex", "proc-macro", "literals", "color"]
+license = "MIT"
+version = "0.1.0"
+edition = "2021"

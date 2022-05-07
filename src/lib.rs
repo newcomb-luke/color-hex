@@ -15,7 +15,7 @@
 //! // The macro can be used in const context
 //! const COLOR: [u8; 3] = color_from_hex!("010203");
 //! # fn main() {
-//! assert_eq!(DATA, [1, 2, 3]);
+//! assert_eq!(COLOR, [1, 2, 3]);
 //!
 //! // It understands both upper and lower hex values
 //! assert_eq!(color_from_hex!("a1 b2 c3 d4"), [0xA1, 0xB2, 0xC3, 0xD4]);

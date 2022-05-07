@@ -1,3 +1,32 @@
+//! This crate provides the `color_from_hex!` macro for converting RGB and RGBA hexadecimal string literals
+//! to a byte array at compile time.
+//!
+//! It accepts the following characters in the input string:
+//!
+//! - `'0'...'9'`, `'a'...'f'`, `'A'...'F'` — hex characters which will be used
+//!     in construction of the output byte array
+//! - `' '`, `'\r'`, `'\n'`, `'\t'` — formatting characters which will be
+//!     ignored
+//!
+//! # Examples
+//! ```
+//! # use color_hex::color_from_hex;
+//!
+//! // The macro can be used in const context
+//! const COLOR: [u8; 3] = color_from_hex!("010203");
+//! # fn main() {
+//! assert_eq!(DATA, [1, 2, 3]);
+//!
+//! // It understands both upper and lower hex values
+//! assert_eq!(color_from_hex!("a1 b2 c3 d4"), [0xA1, 0xB2, 0xC3, 0xD4]);
+//! assert_eq!(color_from_hex!("E5 E6 90 92"), [0xE5, 0xE6, 0x90, 0x92]);
+//! assert_eq!(color_from_hex!("0a0B0C"), [10, 11, 12]);
+//!
+//! // It can tolerate a leading '#' or none
+//! assert_eq!(color_from_hex!("#4c4c4c"), color_from_hex!("4c4c4c"))
+//! # }
+//! ```
+
 extern crate proc_macro;
 
 use std::vec::IntoIter;

@@ -6,7 +6,7 @@ A small Rust crate that supplies procedural macros to convert hex strings into R
 
 ## Documentation
 
-[Documentation with examples](https://docs.rs/color-hex) The documentation includes a comprehensive description of the syntax supported for parsing hex colors.
+[The documentation](https://docs.rs/color-hex) includes a comprehensive description of the syntax supported for parsing hex colors.
 
 ## Usage
 

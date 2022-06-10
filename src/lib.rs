@@ -154,17 +154,17 @@ pub fn color_from_hex(input: TokenStream) -> TokenStream {
             for token in iter {
                 tokens.push(token);
 
-                if tokens.len() > 8 {
-                    panic!("expected a maximum of 8 characters for RGBA, ex: #4c4c4cff");
-                }
-            }
-
-            if tokens.len() < 6 {
-                panic!(
-                    "expected a minimum of 6 characters for RGB, ex: #4c4c4c. Tokens: {:#?}",
-                    tokens
+                assert!(
+                    tokens.len() <= 8,
+                    "expected a maximum of 8 characters for RGBA, ex: #4c4c4cff"
                 );
             }
+
+            assert!(
+                tokens.len() >= 6,
+                "expected a minimum of 6 characters for RGB, ex: #4c4c4c. Tokens: {:#?}",
+                tokens
+            );
 
             out_ts.extend(tokens.into_iter());
         }

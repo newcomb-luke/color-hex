@@ -65,7 +65,11 @@ impl TokenTreeIter {
     /// length.
     ///
     fn new(input: Literal) -> Self {
-        let mut buf: Vec<char> = input.to_string().chars().collect();
+        let mut buf: Vec<char> = input
+            .to_string()
+            .chars()
+            .filter(|c| !c.is_whitespace())
+            .collect();
 
         match buf.as_slice() {
             ['"', .., '"'] => (),
@@ -90,23 +94,16 @@ impl TokenTreeIter {
     }
 
     /// Parses a single hex character (a-f/A-F/0-9) as a `u8` from the `TokenTreeIter`'s
-    /// internal buffer, ignoring whitespace.
+    /// internal buffer.
     ///
     /// # Panics
-    /// This panics if a non-hex, non-whitespace character is encountered.
+    /// This panics if [`u8::from_str_radix`] fails converting the next hex character into a `u8`.
     fn next_hex_val(&mut self) -> Option<u8> {
-        loop {
-            let v = self.buf.next()?;
-            let n = match v {
-                '0'..='9' => v as u8 - 48,
-                'A'..='F' => v as u8 - 55,
-                'a'..='f' => v as u8 - 87,
-                ' ' | '\r' | '\n' | '\t' => continue,
-                c if c.is_ascii() => panic!("encountered invalid character: `{}`", v as char),
-                _ => panic!("encountered invalid non-ASCII character"),
-            };
-            return Some(n);
-        }
+        self.buf
+            .next()
+            .map(|c| u8::from_str_radix(&c.to_string(), 16))
+            .transpose()
+            .unwrap()
     }
 }
 
@@ -157,17 +154,17 @@ pub fn color_from_hex(input: TokenStream) -> TokenStream {
             for token in iter {
                 tokens.push(token);
 
-                if tokens.len() > 8 {
-                    panic!("expected a maximum of 8 characters for RGBA, ex: #4c4c4cff");
-                }
-            }
-
-            if tokens.len() < 6 {
-                panic!(
-                    "expected a minimum of 6 characters for RGB, ex: #4c4c4c. Tokens: {:#?}",
-                    tokens
+                assert!(
+                    tokens.len() <= 8,
+                    "expected a maximum of 8 characters for RGBA, ex: #4c4c4cff"
                 );
             }
+
+            assert!(
+                tokens.len() >= 6,
+                "expected a minimum of 6 characters for RGB, ex: #4c4c4c. Tokens: {:#?}",
+                tokens
+            );
 
             out_ts.extend(tokens.into_iter());
         }

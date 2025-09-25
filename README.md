@@ -14,7 +14,7 @@ Add this to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-color_hex = "0.2.0"
+color-hex = "0.2.0"
 ```
 
 Here is an example of converting a direct "HTML style" hex color string to an array:
